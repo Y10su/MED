@@ -1,1 +1,380 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لا تضيع في المدينة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #0f172a;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+        }
 
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        /* شريط التصفح (Navbar) */
+        nav {
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            box-sizing: border-box;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--secondary);
+            cursor: pointer;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .nav-links p {
+            display: inline-block;
+            margin: 0 15px;
+            font-weight: 700;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .nav-links p:hover {
+            color: var(--primary);
+        }
+
+        /* إعدادات الصفحات (Views) */
+        .view-section {
+            display: none;
+            min-height: 100vh;
+            padding-top: 80px; /* لتعويض مساحة الـ Navbar */
+            animation: fadeIn 0.5s ease;
+        }
+
+        .view-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* واجهة البداية (Hero Section) */
+        .hero {
+            height: 70vh;
+            background: linear-gradient(to bottom, rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.4)), url('https://images.unsplash.com/photo-1590452335198-4c925827361e?auto=format&fit=crop&w=1920&q=80') center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: clamp(36px, 5vw, 64px);
+            font-weight: 900;
+            margin: 0 0 20px 0;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+
+        .hero p {
+            font-size: clamp(18px, 2.5vw, 24px);
+            margin: 0 0 40px 0;
+            max-width: 600px;
+        }
+
+        .explore-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.4);
+        }
+
+        .explore-btn:hover {
+            background-color: #1d4ed8;
+            transform: translateY(-3px);
+        }
+
+        /* الأقسام (Sections) */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 60px auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-header h2 {
+            font-size: 36px;
+            color: var(--secondary);
+            margin: 0 0 10px 0;
+            font-weight: 900;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 18px;
+            margin: 0;
+        }
+
+        /* شبكة الكروت (Grid) */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        }
+
+        .card-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin: 0 0 10px 0;
+            color: var(--secondary);
+        }
+
+        .card-desc {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin: 0 0 20px 0;
+            font-size: 16px;
+        }
+
+        /* القائمة باستخدام p بدلاً من ul/ol */
+        .feature-item {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 14px;
+            margin: 0 0 8px 0;
+            background: #eff6ff;
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 50px;
+            align-self: flex-start;
+        }
+
+        .map-link {
+            display: block;
+            text-align: center;
+            background-color: var(--secondary);
+            color: white;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 700;
+            margin-top: auto;
+            transition: background 0.3s;
+        }
+
+        .map-link:hover {
+            background-color: #334155;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- شريط التصفح -->
+    <nav>
+        <div class="logo" onclick="switchView('home')">لا تضيع في <span>المدينة</span></div>
+        <div class="nav-links">
+            <p onclick="switchView('home')">الرئيسية</p>
+            <p onclick="switchView('entertainment')">ترفيه وتسوق</p>
+            <p onclick="switchView('culture')">ثقافة وتاريخ</p>
+        </div>
+    </nav>
+
+    <!-- الصفحة الرئيسية -->
+    <div id="home" class="view-section active">
+        <header class="hero">
+            <h1>اكتشف سحر المدينة المنورة</h1>
+            <p>دليلك السياحي الشامل لأفضل الوجهات الترفيهية والثقافية، صُمم خصيصاً ليجعل رحلتك أسهل وأمتع.</p>
+            <button class="explore-btn" onclick="switchView('entertainment')">ابدأ جولتك الآن</button>
+        </header>
+        
+        <div class="container">
+            <div class="section-header">
+                <h2>أين تود الذهاب اليوم؟</h2>
+                <p>اختر القسم الذي يناسب اهتمامك</p>
+            </div>
+            <div class="grid-container">
+                <!-- كرت الترفيه -->
+                <div class="card" onclick="switchView('entertainment')" style="cursor: pointer;">
+                    <img src="https://images.unsplash.com/photo-1519558260268-cde7e03aebf0?auto=format&fit=crop&w=800&q=80" alt="ترفيه" class="card-img">
+                    <div class="card-content">
+                        <h3 class="card-title">الترفيه والتسوق</h3>
+                        <p class="card-desc">استكشف أحدث المولات، الحدائق المفتوحة، وأفضل الأماكن لقضاء وقت ممتع مع العائلة والأصدقاء.</p>
+                    </div>
+                </div>
+                <!-- كرت الثقافة -->
+                <div class="card" onclick="switchView('culture')" style="cursor: pointer;">
+                    <img src="https://images.unsplash.com/photo-1620138546344-7b2c38516fc5?auto=format&fit=crop&w=800&q=80" alt="ثقافة" class="card-img">
+                    <div class="card-content">
+                        <h3 class="card-title">الثقافة والتاريخ</h3>
+                        <p class="card-desc">تعرف على المعالم الإسلامية الخالدة، المساجد التاريخية، وأماكن ارتبطت بالسيرة النبوية العطرة.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- قسم الترفيه والتسوق -->
+    <div id="entertainment" class="view-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>الترفيه والتسوق</h2>
+                <p>أبرز الوجهات الحيوية في المدينة</p>
+            </div>
+            
+            <div class="grid-container">
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1519558260268-cde7e03aebf0?auto=format&fit=crop&w=600&q=80" alt="الراشد مول" class="card-img">
+                    <div class="card-content">
+                        <h3 class="card-title">الراشد ميغا مول</h3>
+                        <p class="card-desc">مجمع تجاري ضخم يضم خيارات تسوق من ماركات عالمية ومحلية، بالإضافة إلى صالة مطاعم ضخمة.</p>
+                        <p class="feature-item">- يضم منطقة ألعاب متكاملة للأطفال</p>
+                        <a href="https://maps.google.com" target="_blank" class="map-link">عرض الموقع على الخريطة</a>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1588824367339-c580451a37c0?auto=format&fit=crop&w=600&q=80" alt="حديقة الملك فهد" class="card-img">
+                    <div class="card-content">
+                        <h3 class="card-title">حديقة الملك فهد المركزية</h3>
+                        <p class="card-desc">الرئة الخضراء للمدينة، تتميز بمساحات شاسعة، بحيرات اصطناعية، ومسارات مخصصة للمشي وركوب الدراجات.</p>
+                        <p class="feature-item">- مثالية لحفلات الشواء العائلية</p>
+                        <a href="https://maps.google.com" target="_blank" class="map-link">عرض الموقع على الخريطة</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80" alt="جادة قباء" class="card-img">
+                    <div class="card-content">
+                        <h3 class="card-title">جادة قباء</h3>
+                        <p class="card-desc">ممشى حيوي مفتوح يجمع بين التسوق والترفيه، يعج بالمقاهي المتخصصة والمتاجر المتنوعة بأجواء رائعة.</p>
+                        <p class="feature-item">- أجواء ليلية نابضة بالحياة</p>
+                        <a href="https://maps.google.com" target="_blank" class="map-link">عرض الموقع على الخريطة</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- قسم الثقافة والتاريخ -->
+    <div id="culture" class="view-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>الثقافة والتاريخ</h2>
+                <p>عبق الماضي وروحانية المكان</p>
+            </div>
+            
+            <div class="grid-container">
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1590452335198-4c925827361e?auto=format&fit=crop&w=600&q=80" alt="المسجد النبوي" class="card-img">
+                    <div class="card-content">
+                        <h3 class="card-title">المسجد النبوي الشريف</h3>
+                        <p class="card-desc">ثاني أقدس الأماكن في الإسلام، يتميز بعمارته المهيبة ومظلاته الضخمة التي تزين ساحاته.</p>
+                        <p class="feature-item">- يحتوي على الروضة الشريفة</p>
+                        <a href="https://maps.google.com" target="_blank" class="map-link">عرض الموقع على الخريطة</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1620138546344-7b2c38516fc5?auto=format&fit=crop&w=600&q=80" alt="مسجد قباء" class="card-img">
+                    <div class="card-content">
+                        <h3 class="card-title">مسجد قباء</h3>
+                        <p class="card-desc">أول مسجد أُسس على التقوى في الإسلام، ارتبطت به أحاديث نبوية تبين فضل الصلاة فيه.</p>
+                        <p class="feature-item">- يُفضل الوصول إليه عبر ممشى قباء</p>
+                        <a href="https://maps.google.com" target="_blank" class="map-link">عرض الموقع على الخريطة</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1594998495048-18e381481b4d?auto=format&fit=crop&w=600&q=80" alt="جبل أحد" class="card-img">
+                    <div class="card-content">
+                        <h3 class="card-title">جبل أحد ومقبرة الشهداء</h3>
+                        <p class="card-desc">معلم تاريخي مهم وقعت عنده غزوة أحد الشهيرة، ويضم ميدان الرماة ومقبرة شهداء الصحابة.</p>
+                        <p class="feature-item">- جبل يحبنا ونحبه</p>
+                        <a href="https://maps.google.com" target="_blank" class="map-link">عرض الموقع على الخريطة</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- سكريبت التنقل بين الأقسام -->
+    <script>
+        function switchView(viewId) {
+            // إخفاء كل الأقسام
+            document.querySelectorAll('.view-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // إظهار القسم المطلوب
+            document.getElementById(viewId).classList.add('active');
+            
+            // التمرير لأعلى الصفحة عند التنقل
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
