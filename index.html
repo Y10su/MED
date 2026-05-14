@@ -6,14 +6,26 @@
     <title>لا تضيع في المدينة</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
+        /* المتغيرات الأساسية (الوضع النهاري) */
         :root {
-            --primary: #2563eb;
-            --secondary: #0f172a;
             --bg-color: #f8fafc;
             --card-bg: #ffffff;
-            --text-main: #1e293b;
+            --text-main: #0f172a;
             --text-muted: #64748b;
-            --btn-hover: #1d4ed8;
+            --primary: #2563eb;
+            --nav-bg: rgba(255, 255, 255, 0.9);
+            --border-color: #e2e8f0;
+        }
+
+        /* متغيرات الوضع الليلي */
+        [data-theme="dark"] {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary: #3b82f6;
+            --nav-bg: rgba(30, 41, 59, 0.9);
+            --border-color: #334155;
         }
 
         body {
@@ -22,383 +34,419 @@
             font-family: 'Tajawal', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
+            transition: background-color 0.3s, color 0.3s;
             overflow-x: hidden;
         }
 
-        /* شريط التصفح والأزرار الواضحة */
-        nav {
-            background-color: #ffffff;
+        /* ================= شاشة الترحيب ================= */
+        #welcome-screen {
             position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 5%;
-            box-sizing: border-box;
-        }
-
-        .logo {
-            font-size: 26px;
-            font-weight: 900;
-            color: var(--secondary);
-            cursor: pointer;
-        }
-
-        .logo span {
-            color: var(--primary);
-        }
-
-        .nav-buttons {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        /* تصميم الأزرار الجديد - واضح وبارز */
-        .nav-btn {
-            background-color: #f1f5f9;
-            color: var(--secondary);
-            border: 2px solid #e2e8f0;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .nav-btn:hover, .nav-btn.active-btn {
-            background-color: var(--primary);
-            color: white;
-            border-color: var(--primary);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
-        }
-
-        /* إعدادات الصفحات */
-        .view-section {
-            display: none;
-            min-height: 100vh;
-            padding-top: 90px;
-            animation: fadeIn 0.4s ease;
-        }
-
-        .view-section.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* واجهة البداية */
-        .hero {
-            height: 60vh;
-            background: linear-gradient(to bottom, rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.5)), url('https://images.unsplash.com/photo-1590452335198-4c925827361e?auto=format&fit=crop&w=1920&q=80') center/cover;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.9)), url('https://images.unsplash.com/photo-1590452335198-4c925827361e?auto=format&fit=crop&w=1920&q=80') center/cover;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            text-align: center;
+            z-index: 9999;
             color: white;
-            padding: 0 20px;
-            margin-bottom: 40px;
+            text-align: center;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
         }
 
-        .hero h1 { font-size: clamp(32px, 5vw, 60px); font-weight: 900; margin: 0 0 15px 0; }
-        .hero p { font-size: clamp(18px, 2.5vw, 22px); margin: 0; max-width: 700px; line-height: 1.6; }
-
-        .container { width: 90%; max-width: 1200px; margin: 0 auto 60px auto; }
+        #welcome-screen h1 { font-size: clamp(40px, 8vw, 80px); margin: 0 0 10px 0; font-weight: 900; }
+        #welcome-screen p { font-size: clamp(18px, 4vw, 24px); margin: 0 0 40px 0; max-width: 80%; }
         
-        .section-header { text-align: center; margin-bottom: 40px; }
-        .section-header h2 { font-size: 36px; color: var(--secondary); margin: 0 0 10px 0; font-weight: 900; }
-        .section-header p { color: var(--text-muted); font-size: 18px; margin: 0; }
+        .enter-btn {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 20px;
+            font-weight: 900;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.4);
+            transition: transform 0.3s, background-color 0.3s;
+        }
+        .enter-btn:hover { transform: scale(1.05); background-color: #2563eb; }
+
+        /* ================= الهيكل الأساسي والمحتوى ================= */
+        #main-content {
+            display: none; 
+            padding-bottom: 100px; 
+        }
+
+        /* شريط التصفح للكمبيوتر */
+        .desktop-nav {
+            display: none;
+            background: var(--nav-bg);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0; width: 100%;
+            padding: 15px 5%;
+            box-sizing: border-box;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            z-index: 1000;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .desktop-nav .logo { font-size: 24px; font-weight: 900; }
+        .desktop-nav .logo span { color: var(--primary); }
+        .desktop-links { display: flex; gap: 15px; }
+        .desktop-btn {
+            background: transparent; border: none; color: var(--text-main);
+            font-size: 16px; font-weight: 700; cursor: pointer; padding: 10px 15px; border-radius: 8px;
+            transition: all 0.3s;
+        }
+        .desktop-btn:hover, .desktop-btn.active-btn { background: var(--primary); color: white; }
+
+        /* زر الوضع الليلي */
+        .theme-toggle {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        /* شريط التصفح للجوال */
+        .mobile-nav {
+            display: flex;
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            background: var(--nav-bg); backdrop-filter: blur(15px);
+            border-radius: 30px; padding: 8px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            gap: 5px; z-index: 1000; width: 95%; max-width: 400px;
+            justify-content: space-between; border: 1px solid var(--border-color);
+        }
+        .mobile-btn {
+            background: transparent; color: var(--text-muted); border: none;
+            padding: 10px 12px; border-radius: 20px; font-size: 14px; font-weight: 900; cursor: pointer;
+            flex: 1; text-align: center;
+        }
+        .mobile-btn.active-btn { background: var(--text-main); color: var(--bg-color); }
+
+        /* الإعدادات العامة للأقسام */
+        .view-section { display: none; padding-top: 30px; animation: fadeIn 0.4s ease; }
+        .view-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        .container { width: 90%; max-width: 1200px; margin: 0 auto; }
+        .section-title { font-size: 32px; font-weight: 900; margin-bottom: 30px; border-right: 5px solid var(--primary); padding-right: 15px; }
 
         /* شبكة الكروت */
         .grid-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 25px;
         }
 
         .card {
-            background-color: var(--card-bg);
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-            transition: transform 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            border: 1px solid #e2e8f0;
+            background-color: var(--card-bg); border-radius: 20px; overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); border: 1px solid var(--border-color);
+            display: flex; flex-direction: column; transition: transform 0.3s;
+        }
+        .card:hover { transform: translateY(-8px); }
+        .card-img { width: 100%; height: 200px; object-fit: cover; }
+        .card-content { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; }
+        .card-title { font-size: 22px; font-weight: 900; margin: 0 0 10px 0; color: var(--primary); }
+        .card-desc { color: var(--text-muted); margin: 0 0 15px 0; line-height: 1.6; }
+        
+        .custom-bullet {
+            color: var(--text-main); font-weight: 700; font-size: 14px; margin: 0 0 10px 0;
+            background: var(--bg-color); padding: 5px 12px; border-radius: 8px; display: inline-block;
+            border: 1px solid var(--border-color);
         }
 
-        .card:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(0,0,0,0.12); }
-        .card-img { width: 100%; height: 220px; object-fit: cover; }
-        .card-content { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
-        .card-title { font-size: 22px; font-weight: 900; margin: 0 0 10px 0; color: var(--secondary); }
-        .card-desc { color: var(--text-muted); line-height: 1.6; margin: 0 0 20px 0; font-size: 15px; }
-
-        .feature-item {
-            color: #047857;
-            font-weight: 700;
-            font-size: 14px;
-            margin: 0 0 15px 0;
-            background: #d1fae5;
-            display: inline-block;
-            padding: 6px 12px;
-            border-radius: 6px;
-            align-self: flex-start;
-        }
-
-        /* زر الخريطة - بارز وواضح */
         .map-link {
-            display: block;
-            text-align: center;
-            background-color: var(--primary);
-            color: white;
-            text-decoration: none;
-            padding: 14px;
-            border-radius: 8px;
-            font-weight: 900;
-            font-size: 16px;
-            margin-top: auto;
+            text-align: center; background-color: #10b981; color: white;
+            text-decoration: none; padding: 12px; border-radius: 12px; font-weight: 900; margin-top: auto;
             transition: background 0.3s;
-            border: 2px solid var(--primary);
+        }
+        .map-link:hover { background-color: #059669; }
+
+        /* بانر الرئيسية */
+        .home-banner {
+            background: linear-gradient(135deg, var(--primary), #1e3a8a);
+            border-radius: 20px; padding: 30px; color: white; margin-bottom: 40px;
+        }
+        .home-banner h2 { margin: 0 0 10px 0; font-size: 28px; font-weight: 900; }
+        .home-banner p { margin: 0; font-size: 16px; opacity: 0.9; line-height: 1.6; }
+
+        .mobile-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 5%; margin-bottom: 10px;
         }
 
-        .map-link:hover {
-            background-color: white;
-            color: var(--primary);
+        @media (min-width: 768px) {
+            .mobile-nav { display: none; }
+            .mobile-header { display: none; }
+            .desktop-nav { display: flex; }
+            #main-content { padding-top: 100px; padding-bottom: 40px; }
+            .grid-container { grid-template-columns: repeat(3, 1fr); }
         }
-
-        /* كروت الأقسام في الصفحة الرئيسية */
-        .home-section-card { cursor: pointer; text-align: center; }
-        .home-section-card .card-content { align-items: center; justify-content: center; padding: 30px 20px; }
-        .home-section-card .map-link { background-color: var(--secondary); border-color: var(--secondary); width: 80%; }
-        .home-section-card .map-link:hover { background-color: white; color: var(--secondary); }
-
     </style>
 </head>
 <body>
 
-    <!-- شريط التصفح مع الأزرار الجديدة -->
-    <nav>
-        <div class="logo" onclick="switchView('home')">لا تضيع في <span>المدينة</span></div>
-        <div class="nav-buttons">
-            <button class="nav-btn active-btn" id="btn-home" onclick="switchView('home')">الرئيسية</button>
-            <button class="nav-btn" id="btn-entertainment" onclick="switchView('entertainment')">الترفيه</button>
-            <button class="nav-btn" id="btn-culture" onclick="switchView('culture')">الثقافة</button>
-            <button class="nav-btn" id="btn-food" onclick="switchView('food')">المطاعم</button>
-            <button class="nav-btn" id="btn-hotels" onclick="switchView('hotels')">الفنادق</button>
-        </div>
-    </nav>
-
-    <!-- الصفحة الرئيسية (تضم 4 أقسام الآن) -->
-    <div id="home" class="view-section active">
-        <header class="hero">
-            <h1>اكتشف سحر المدينة المنورة</h1>
-            <p>دليلك الشامل لأفضل الوجهات، المطاعم، وأماكن الإقامة. اختر القسم الذي يناسب اهتمامك وابدأ جولتك.</p>
-        </header>
-        
-        <div class="container">
-            <div class="grid-container">
-                <div class="card home-section-card" onclick="switchView('entertainment')">
-                    <img src="https://images.unsplash.com/photo-1519558260268-cde7e03aebf0?auto=format&fit=crop&w=600&q=80" alt="ترفيه" class="card-img">
-                    <div class="card-content">
-                        <h3 class="card-title">الترفيه والتسوق</h3>
-                        <p class="card-desc">مولات، حدائق، وأماكن ترفيهية للعائلة.</p>
-                        <div class="map-link">تصفح القسم</div>
-                    </div>
-                </div>
-                <div class="card home-section-card" onclick="switchView('culture')">
-                    <img src="https://images.unsplash.com/photo-1620138546344-7b2c38516fc5?auto=format&fit=crop&w=600&q=80" alt="ثقافة" class="card-img">
-                    <div class="card-content">
-                        <h3 class="card-title">الثقافة والتاريخ</h3>
-                        <p class="card-desc">مساجد تاريخية ومعالم إسلامية خالدة.</p>
-                        <div class="map-link">تصفح القسم</div>
-                    </div>
-                </div>
-                <div class="card home-section-card" onclick="switchView('food')">
-                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=600&q=80" alt="مطاعم" class="card-img">
-                    <div class="card-content">
-                        <h3 class="card-title">المطاعم والكافيهات</h3>
-                        <p class="card-desc">أشهى المأكولات وأفضل المقاهي المختصة.</p>
-                        <div class="map-link">تصفح القسم</div>
-                    </div>
-                </div>
-                <div class="card home-section-card" onclick="switchView('hotels')">
-                    <img src="https://images.unsplash.com/photo-1566073171600-545b00b0100a?auto=format&fit=crop&w=600&q=80" alt="فنادق" class="card-img">
-                    <div class="card-content">
-                        <h3 class="card-title">الفنادق والإقامة</h3>
-                        <p class="card-desc">فنادق قريبة من الحرم وشقق فندقية مريحة.</p>
-                        <div class="map-link">تصفح القسم</div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <!-- شاشة الترحيب -->
+    <div id="welcome-screen">
+        <h1>لا تضيع في المدينة</h1>
+        <p>دليلك السياحي الشامل لأفضل الأماكن والوجهات الحقيقية في المدينة المنورة.</p>
+        <button class="enter-btn" onclick="enterSite()">ابدأ الاستكشاف الآن</button>
     </div>
 
-    <!-- قسم الترفيه والتسوق -->
-    <div id="entertainment" class="view-section">
-        <div class="container">
-            <div class="section-header"><h2>الترفيه والتسوق</h2></div>
-            <div class="grid-container">
-                <div class="card">
-                    <img src="https://images.unsplash.com/photo-1519558260268-cde7e03aebf0?auto=format&fit=crop&w=600&q=80" class="card-img">
-                    <div class="card-content">
-                        <h3 class="card-title">الراشد ميغا مول</h3>
-                        <p class="card-desc">مجمع تجاري ضخم يضم خيارات تسوق ومطاعم متنوعة.</p>
-                        <p class="feature-item">يضم منطقة ألعاب للأطفال</p>
-                        <a href="https://maps.google.com" target="_blank" class="map-link">الذهاب للموقع</a>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="https://images.unsplash.com/photo-1588824367339-c580451a37c0?auto=format&fit=crop&w=600&q=80" class="card-img">
-                    <div class="card-content">
-                        <h3 class="card-title">حديقة الملك فهد</h3>
-                        <p class="card-desc">الرئة الخضراء للمدينة، تتميز بمسارات المشي والبحيرات.</p>
-                        <p class="feature-item">مثالية للنزهات العائلية</p>
-                        <a href="https://maps.google.com" target="_blank" class="map-link">الذهاب للموقع</a>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80" class="card-img">
-                    <div class="card-content">
-                        <h3 class="card-title">جادة قباء</h3>
-                        <p class="card-desc">ممشى حيوي مفتوح يعج بالمقاهي والمتاجر بأجواء ليلية رائعة.</p>
-                        <p class="feature-item">أجواء ليلية نابضة بالحياة</p>
-                        <a href="https://maps.google.com" target="_blank" class="map-link">الذهاب للموقع</a>
-                    </div>
-                </div>
+    <div id="main-content">
+        <!-- شريط الكمبيوتر -->
+        <nav class="desktop-nav">
+            <div class="logo">لا تضيع في <span>المدينة</span></div>
+            <div class="desktop-links">
+                <button class="desktop-btn active-btn" onclick="switchView('home')">الرئيسية</button>
+                <button class="desktop-btn" onclick="switchView('culture')">معالم وتاريخ</button>
+                <button class="desktop-btn" onclick="switchView('entertainment')">ترفيه وتسوق</button>
+                <button class="desktop-btn" onclick="switchView('food')">مطاعم وكافيهات</button>
+                <button class="desktop-btn" onclick="switchView('hotels')">فنادق وإقامة</button>
             </div>
-        </div>
-    </div>
+            <button class="theme-toggle" onclick="toggleTheme()">الوضع الليلي 🌙</button>
+        </nav>
 
-    <!-- قسم الثقافة والتاريخ -->
-    <div id="culture" class="view-section">
-        <div class="container">
-            <div class="section-header"><h2>الثقافة والتاريخ</h2></div>
-            <div class="grid-container">
-                <div class="card">
-                    <img src="https://images.unsplash.com/photo-1590452335198-4c925827361e?auto=format&fit=crop&w=600&q=80" class="card-img">
-                    <div class="card-content">
-                        <h3 class="card-title">المسجد النبوي</h3>
-                        <p class="card-desc">ثاني أقدس الأماكن في الإسلام، يتميز بعمارته المهيبة.</p>
-                        <p class="feature-item">القلب النابض للمدينة</p>
-                        <a href="https://maps.google.com" target="_blank" class="map-link">الذهاب للموقع</a>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="https://images.unsplash.com/photo-1620138546344-7b2c38516fc5?auto=format&fit=crop&w=600&q=80" class="card-img">
-                    <div class="card-content">
-                        <h3 class="card-title">مسجد قباء</h3>
-                        <p class="card-desc">أول مسجد أُسس على التقوى في الإسلام.</p>
-                        <p class="feature-item">يُفضل الوصول إليه عبر الممشى</p>
-                        <a href="https://maps.google.com" target="_blank" class="map-link">الذهاب للموقع</a>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="https://images.unsplash.com/photo-1594998495048-18e381481b4d?auto=format&fit=crop&w=600&q=80" class="card-img">
-                    <div class="card-content">
-                        <h3 class="card-title">جبل أحد</h3>
-                        <p class="card-desc">معلم تاريخي مهم وقعت عنده غزوة أحد الشهيرة.</p>
-                        <p class="feature-item">يضم ميدان الرماة</p>
-                        <a href="https://maps.google.com" target="_blank" class="map-link">الذهاب للموقع</a>
-                    </div>
-                </div>
-            </div>
+        <!-- ترويسة الجوال -->
+        <div class="mobile-header">
+            <div style="font-size: 20px; font-weight: 900;">لا تضيع في <span style="color:var(--primary)">المدينة</span></div>
+            <button class="theme-toggle" style="padding: 8px 15px; font-size: 14px;" onclick="toggleTheme()">🌙</button>
         </div>
-    </div>
 
-    <!-- القسم الجديد: المطاعم والكافيهات -->
-    <div id="food" class="view-section">
-        <div class="container">
-            <div class="section-header"><h2>المطاعم والكافيهات</h2></div>
-            <div class="grid-container">
-                <div class="card">
-                    <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=600&q=80" class="card-img">
-                    <div class="card-content">
-                        <h3 class="card-title">المطاعم الشعبية</h3>
-                        <p class="card-desc">استمتع بألذ الأطباق السعودية التقليدية في أشهر مطاعم المدينة.</p>
-                        <p class="feature-item">مناسب للغداء والعشاء</p>
-                        <a href="https://maps.google.com" target="_blank" class="map-link">الذهاب للموقع</a>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?auto=format&fit=crop&w=600&q=80" class="card-img">
-                    <div class="card-content">
-                        <h3 class="card-title">مقاهي ممشى الهجرة</h3>
-                        <p class="card-desc">تجمع لأفضل المقاهي المختصة بجلسات خارجية وداخلية مميزة.</p>
-                        <p class="feature-item">قهوة مختصة وحلويات</p>
-                        <a href="https://maps.google.com" target="_blank" class="map-link">الذهاب للموقع</a>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80" class="card-img">
-                    <div class="card-content">
-                        <h3 class="card-title">أماكن الإفطار</h3>
-                        <p class="card-desc">ابدأ يومك بأحلى فطور محلي وعالمي في أماكن هادئة وراقية.</p>
-                        <p class="feature-item">جلسات صباحية رايقة</p>
-                        <a href="https://maps.google.com" target="_blank" class="map-link">الذهاب للموقع</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+        <!-- شريط الجوال السفلي -->
+        <nav class="mobile-nav">
+            <button class="mobile-btn active-btn" onclick="switchView('home')">الرئيسية</button>
+            <button class="mobile-btn" onclick="switchView('culture')">معالم</button>
+            <button class="mobile-btn" onclick="switchView('entertainment')">تسوق</button>
+            <button class="mobile-btn" onclick="switchView('food')">مطاعم</button>
+            <button class="mobile-btn" onclick="switchView('hotels')">فنادق</button>
+        </nav>
 
-    <!-- القسم الجديد: الفنادق والإقامة -->
-    <div id="hotels" class="view-section">
-        <div class="container">
-            <div class="section-header"><h2>الفنادق والإقامة</h2></div>
-            <div class="grid-container">
-                <div class="card">
-                    <img src="https://images.unsplash.com/photo-1542314831-c6a4d1409b1d?auto=format&fit=crop&w=600&q=80" class="card-img">
-                    <div class="card-content">
-                        <h3 class="card-title">فنادق المنطقة المركزية</h3>
-                        <p class="card-desc">إقامة فاخرة بخدمات 5 نجوم وإطلالات مباشرة على المسجد النبوي.</p>
-                        <p class="feature-item">قريبة جداً من الحرم</p>
-                        <a href="https://maps.google.com" target="_blank" class="map-link">الذهاب للموقع</a>
-                    </div>
+        <!-- ================= 1. الصفحة الرئيسية ================= -->
+        <div id="home" class="view-section active">
+            <div class="container">
+                <div class="home-banner">
+                    <h2>أهلاً بك في طابة الطيبة!</h2>
+                    <p>هذا الموقع صُمم خصيصاً لزوار وأهالي المدينة المنورة. جمعنا لك مواقع حقيقية، من أطهر البقاع إلى أفضل أماكن التسوق والمطاعم الموثوقة. استخدم الأزرار للتنقل بين الأقسام.</p>
                 </div>
-                <div class="card">
-                    <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=600&q=80" class="card-img">
-                    <div class="card-content">
-                        <h3 class="card-title">الشقق الفندقية</h3>
-                        <p class="card-desc">خيارات ممتازة للعوائل توفر مساحات واسعة ومطابخ متكاملة.</p>
-                        <p class="feature-item">مناسبة للعوائل الكبيرة</p>
-                        <a href="https://maps.google.com" target="_blank" class="map-link">الذهاب للموقع</a>
+
+                <h2 class="section-title">وجهات لا تفوتك</h2>
+                <div class="grid-container">
+                    <div class="card">
+                        <img src="https://images.unsplash.com/photo-1620138546344-7b2c38516fc5?auto=format&fit=crop&w=600&q=80" class="card-img" alt="المسجد النبوي">
+                        <div class="card-content">
+                            <h3 class="card-title">المسجد النبوي الشريف</h3>
+                            <p class="card-desc">الوجهة الأولى والمقصد الأساسي، حيث الروحانية والسكينة والروضة الشريفة.</p>
+                            <p class="custom-bullet">- مفتوح 24 ساعة</p>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Al+Masjid+an+Nabawi" target="_blank" class="map-link">📍 الاتجاه عبر خرائط جوجل</a>
+                        </div>
                     </div>
-                </div>
-                <div class="card">
-                    <img src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=600&q=80" class="card-img">
-                    <div class="card-content">
-                        <h3 class="card-title">فنادق اقتصادية</h3>
-                        <p class="card-desc">أماكن إقامة نظيفة ومريحة بأسعار مناسبة خارج المنطقة المركزية.</p>
-                        <p class="feature-item">توفيرية واقتصادية</p>
-                        <a href="https://maps.google.com" target="_blank" class="map-link">الذهاب للموقع</a>
+                    <div class="card">
+                        <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80" class="card-img" alt="جادة قباء">
+                        <div class="card-content">
+                            <h3 class="card-title">جادة قباء (الممشى)</h3>
+                            <p class="card-desc">يربط بين الحرم ومسجد قباء، مليء بالفعاليات، المتاجر، وعربات القهوة.</p>
+                            <p class="custom-bullet">- أفضل وقت للزيارة: ليلاً</p>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Quba+Walkway+Madinah" target="_blank" class="map-link">📍 الاتجاه عبر خرائط جوجل</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- ================= 2. معالم وتاريخ ================= -->
+        <div id="culture" class="view-section">
+            <div class="container">
+                <h2 class="section-title">معالم سياحية وتاريخية</h2>
+                <div class="grid-container">
+                    <div class="card">
+                        <img src="https://images.unsplash.com/photo-1594998495048-18e381481b4d?auto=format&fit=crop&w=600&q=80" class="card-img" alt="جبل أحد">
+                        <div class="card-content">
+                            <h3 class="card-title">جبل أحد وميدان الرماة</h3>
+                            <p class="card-desc">أحد أهم المواقع التاريخية في السيرة النبوية، يضم مقبرة شهداء أحد.</p>
+                            <p class="custom-bullet">- الدخول مجاني</p>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Mount+Uhud+Madinah" target="_blank" class="map-link">📍 الاتجاه عبر خرائط جوجل</a>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img src="https://images.unsplash.com/photo-1572986877717-380d3509bc66?auto=format&fit=crop&w=600&q=80" class="card-img" alt="مسجد القبلتين">
+                        <div class="card-content">
+                            <h3 class="card-title">مسجد القبلتين</h3>
+                            <p class="card-desc">المسجد الذي نزل فيه الوحي بتغيير القبلة من بيت المقدس إلى الكعبة.</p>
+                            <p class="custom-bullet">- معلم إسلامي بارز</p>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Masjid+al-Qiblatayn+Madinah" target="_blank" class="map-link">📍 الاتجاه عبر خرائط جوجل</a>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img src="https://images.unsplash.com/photo-1620138546344-7b2c38516fc5?auto=format&fit=crop&w=600&q=80" class="card-img" alt="مسجد قباء">
+                        <div class="card-content">
+                            <h3 class="card-title">مسجد قباء</h3>
+                            <p class="card-desc">أول مسجد بُني في الإسلام، الصلاة فيه تعدل عُمرة.</p>
+                            <p class="custom-bullet">- يوجد ساحات خارجية واسعة</p>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Quba+Mosque" target="_blank" class="map-link">📍 الاتجاه عبر خرائط جوجل</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= 3. الترفيه والتسوق ================= -->
+        <div id="entertainment" class="view-section">
+            <div class="container">
+                <h2 class="section-title">الترفيه وأماكن التسوق</h2>
+                <div class="grid-container">
+                    <div class="card">
+                        <img src="https://images.unsplash.com/photo-1519558260268-cde7e03aebf0?auto=format&fit=crop&w=600&q=80" class="card-img" alt="النور مول">
+                        <div class="card-content">
+                            <h3 class="card-title">النور مول</h3>
+                            <p class="card-desc">من أرقى وأكبر مولات المدينة، يضم ماركات عالمية، صالة ألعاب، وسينما.</p>
+                            <p class="custom-bullet">- وجهة تسوق متكاملة</p>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Al+Noor+Mall+Madinah" target="_blank" class="map-link">📍 الاتجاه عبر خرائط جوجل</a>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img src="https://images.unsplash.com/photo-1588824367339-c580451a37c0?auto=format&fit=crop&w=600&q=80" class="card-img" alt="حديقة الملك فهد">
+                        <div class="card-content">
+                            <h3 class="card-title">حديقة الملك فهد المركزية</h3>
+                            <p class="card-desc">مساحات خضراء ضخمة، منطقة ألعاب أطفال، ومناطق مخصصة للشواء.</p>
+                            <p class="custom-bullet">- مناسبة للعائلات</p>
+                            <a href="https://www.google.com/maps/search/?api=1&query=King+Fahd+Central+Park+Madinah" target="_blank" class="map-link">📍 الاتجاه عبر خرائط جوجل</a>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=600&q=80" class="card-img" alt="الراشد ميغا مول">
+                        <div class="card-content">
+                            <h3 class="card-title">الراشد ميغا مول</h3>
+                            <p class="card-desc">يتميز بتصميمه الجميل ويحتوي على خيارات كثيرة للملابس والمطاعم.</p>
+                            <p class="custom-bullet">- يضم منطقة مطاعم كبيرة</p>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Al+Rashid+Mega+Mall+Madinah" target="_blank" class="map-link">📍 الاتجاه عبر خرائط جوجل</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= 4. المطاعم والكافيهات ================= -->
+        <div id="food" class="view-section">
+            <div class="container">
+                <h2 class="section-title">المطاعم والكافيهات الشهيرة</h2>
+                <div class="grid-container">
+                    <div class="card">
+                        <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=600&q=80" class="card-img" alt="البيك">
+                        <div class="card-content">
+                            <h3 class="card-title">مطعم البيك (بجوار الحرم)</h3>
+                            <p class="card-desc">المطعم الأشهر في السعودية للوجبات السريعة والدجاج المسحب، قريب جداً من الساحات.</p>
+                            <p class="custom-bullet">- خيار اقتصادي ولذيذ</p>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Albaik+Madinah+Haram" target="_blank" class="map-link">📍 الاتجاه عبر خرائط جوجل</a>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=600&q=80" class="card-img" alt="سويس هاوس">
+                        <div class="card-content">
+                            <h3 class="card-title">مطعم سويس هاوس</h3>
+                            <p class="card-desc">مطعم يقدم أطباق عالمية وستيك بجودة عالية، يتميز بجلسات راقية وهادئة.</p>
+                            <p class="custom-bullet">- مناسب للعشاء الفاخر</p>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Swiss+House+Madinah" target="_blank" class="map-link">📍 الاتجاه عبر خرائط جوجل</a>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?auto=format&fit=crop&w=600&q=80" class="card-img" alt="كافيهات">
+                        <div class="card-content">
+                            <h3 class="card-title">مجمع كافيهات ممشى الهجرة</h3>
+                            <p class="card-desc">منطقة تجمع أشهر مقاهي القهوة المختصة في المدينة، مثل دوز وهاف مليون وغيرها.</p>
+                            <p class="custom-bullet">- جلسات خارجية رائعة</p>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Al+Hijrah+Walkway+Cafes+Madinah" target="_blank" class="map-link">📍 الاتجاه عبر خرائط جوجل</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= 5. الفنادق والإقامة ================= -->
+        <div id="hotels" class="view-section">
+            <div class="container">
+                <h2 class="section-title">فنادق المنطقة المركزية</h2>
+                <div class="grid-container">
+                    <div class="card">
+                        <img src="https://images.unsplash.com/photo-1566073171600-545b00b0100a?auto=format&fit=crop&w=600&q=80" class="card-img" alt="هيلتون">
+                        <div class="card-content">
+                            <h3 class="card-title">فندق مديتة هيلتون</h3>
+                            <p class="card-desc">من أرقى فنادق المدينة، يتميز بإطلالة مباشرة على الحرم النبوي وخدمات 5 نجوم.</p>
+                            <p class="custom-bullet">- قريب من بوابة النساء</p>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Madinah+Hilton+Hotel" target="_blank" class="map-link">📍 الاتجاه عبر خرائط جوجل</a>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img src="https://images.unsplash.com/photo-1542314831-c6a4d1409b1d?auto=format&fit=crop&w=600&q=80" class="card-img" alt="دار التقوى">
+                        <div class="card-content">
+                            <h3 class="card-title">فندق دار التقوى</h3>
+                            <p class="card-desc">موقعه استراتيجي في الساحة الأمامية للمسجد النبوي، ويوفر راحة تامة للزوار.</p>
+                            <p class="custom-bullet">- خطوات من مدخل الحرم</p>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Dar+Al+Taqwa+Hotel+Madinah" target="_blank" class="map-link">📍 الاتجاه عبر خرائط جوجل</a>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=600&q=80" class="card-img" alt="بولمان زمزم">
+                        <div class="card-content">
+                            <h3 class="card-title">فندق بولمان زمزم المدينة</h3>
+                            <p class="card-desc">يجمع بين الفخامة والأسعار المناسبة، ويقع في المنطقة المركزية الجنوبية.</p>
+                            <p class="custom-bullet">- مطاعم بوفيه ممتازة</p>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Pullman+Zamzam+Madinah" target="_blank" class="map-link">📍 الاتجاه عبر خرائط جوجل</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <script>
+        function enterSite() {
+            document.getElementById('welcome-screen').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('welcome-screen').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+            }, 500);
+        }
+
         function switchView(viewId) {
             document.querySelectorAll('.view-section').forEach(section => {
                 section.classList.remove('active');
             });
             document.getElementById(viewId).classList.add('active');
             
-            document.querySelectorAll('.nav-btn').forEach(btn => {
+            document.querySelectorAll('.mobile-btn, .desktop-btn').forEach(btn => {
                 btn.classList.remove('active-btn');
             });
-            document.getElementById('btn-' + viewId).classList.add('active-btn');
+            
+            const btns = document.querySelectorAll(`[onclick="switchView('${viewId}')"]`);
+            btns.forEach(btn => btn.classList.add('active-btn'));
 
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const currentTheme = body.getAttribute('data-theme');
+            const btns = document.querySelectorAll('.theme-toggle');
+            
+            if (currentTheme === 'dark') {
+                body.removeAttribute('data-theme');
+                btns.forEach(btn => btn.innerHTML = 'الوضع الليلي 🌙');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                btns.forEach(btn => btn.innerHTML = 'الوضع النهاري ☀️');
+            }
         }
     </script>
 </body>
