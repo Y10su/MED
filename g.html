@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لا تضيع في المدينة</title>
+    <title>لا تضيع</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -68,7 +68,7 @@
         .view-section {
             display: none;
             min-height: 100vh;
-            padding-top: 80px; /* لتعويض مساحة الـ Navbar */
+            padding-top: 80px; 
             animation: fadeIn 0.5s ease;
         }
 
@@ -199,7 +199,6 @@
             font-size: 16px;
         }
 
-        /* القائمة باستخدام p بدلاً من ul/ol */
         .feature-item {
             color: var(--primary);
             font-weight: 700;
@@ -235,7 +234,7 @@
 
     <!-- شريط التصفح -->
     <nav>
-        <div class="logo" onclick="switchView('home')">لا تضيع في <span>المدينة</span></div>
+        <div class="logo" onclick="switchView('home')">لا <span>تضيع</span></div>
         <div class="nav-links">
             <p onclick="switchView('home')">الرئيسية</p>
             <p onclick="switchView('entertainment')">ترفيه وتسوق</p>
@@ -246,7 +245,7 @@
     <!-- الصفحة الرئيسية -->
     <div id="home" class="view-section active">
         <header class="hero">
-            <h1>اكتشف سحر المدينة المنورة</h1>
+            <h1>اكتشف سحر وجهتك</h1>
             <p>دليلك السياحي الشامل لأفضل الوجهات الترفيهية والثقافية، صُمم خصيصاً ليجعل رحلتك أسهل وأمتع.</p>
             <button class="explore-btn" onclick="switchView('entertainment')">ابدأ جولتك الآن</button>
         </header>
@@ -262,7 +261,7 @@
                     <img src="https://images.unsplash.com/photo-1519558260268-cde7e03aebf0?auto=format&fit=crop&w=800&q=80" alt="ترفيه" class="card-img">
                     <div class="card-content">
                         <h3 class="card-title">الترفيه والتسوق</h3>
-                        <p class="card-desc">استكشف أحدث المولات، الحدائق المفتوحة، وأفضل الأماكن لقضاء وقت ممتع مع العائلة والأصدقاء.</p>
+                        <p class="card-desc">استكشف أحدث المراكز التجارية، الحدائق المفتوحة، وأفضل الأماكن لقضاء وقت ممتع مع العائلة والأصدقاء.</p>
                     </div>
                 </div>
                 <!-- كرت الثقافة -->
@@ -270,7 +269,7 @@
                     <img src="https://images.unsplash.com/photo-1620138546344-7b2c38516fc5?auto=format&fit=crop&w=800&q=80" alt="ثقافة" class="card-img">
                     <div class="card-content">
                         <h3 class="card-title">الثقافة والتاريخ</h3>
-                        <p class="card-desc">تعرف على المعالم الإسلامية الخالدة، المساجد التاريخية، وأماكن ارتبطت بالسيرة النبوية العطرة.</p>
+                        <p class="card-desc">تعرف على المعالم التاريخية الخالدة، المتاحف العريقة، والأماكن التي تروي قصصاً من عبق الماضي.</p>
                     </div>
                 </div>
             </div>
@@ -282,14 +281,14 @@
         <div class="container">
             <div class="section-header">
                 <h2>الترفيه والتسوق</h2>
-                <p>أبرز الوجهات الحيوية في المدينة</p>
+                <p>أبرز الوجهات الحيوية المتاحة</p>
             </div>
             
             <div class="grid-container">
                 <div class="card">
-                    <img src="https://images.unsplash.com/photo-1519558260268-cde7e03aebf0?auto=format&fit=crop&w=600&q=80" alt="الراشد مول" class="card-img">
+                    <img src="https://images.unsplash.com/photo-1519558260268-cde7e03aebf0?auto=format&fit=crop&w=600&q=80" alt="المركز التجاري" class="card-img">
                     <div class="card-content">
-                        <h3 class="card-title">الراشد ميغا مول</h3>
+                        <h3 class="card-title">المركز التجاري الرئيسي</h3>
                         <p class="card-desc">مجمع تجاري ضخم يضم خيارات تسوق من ماركات عالمية ومحلية، بالإضافة إلى صالة مطاعم ضخمة.</p>
                         <p class="feature-item">- يضم منطقة ألعاب متكاملة للأطفال</p>
                         <a href="https://maps.google.com" target="_blank" class="map-link">عرض الموقع على الخريطة</a>
@@ -297,19 +296,19 @@
                 </div>
                 
                 <div class="card">
-                    <img src="https://images.unsplash.com/photo-1588824367339-c580451a37c0?auto=format&fit=crop&w=600&q=80" alt="حديقة الملك فهد" class="card-img">
+                    <img src="https://images.unsplash.com/photo-1588824367339-c580451a37c0?auto=format&fit=crop&w=600&q=80" alt="الحديقة المركزية" class="card-img">
                     <div class="card-content">
-                        <h3 class="card-title">حديقة الملك فهد المركزية</h3>
-                        <p class="card-desc">الرئة الخضراء للمدينة، تتميز بمساحات شاسعة، بحيرات اصطناعية، ومسارات مخصصة للمشي وركوب الدراجات.</p>
-                        <p class="feature-item">- مثالية لحفلات الشواء العائلية</p>
+                        <h3 class="card-title">الحديقة العامة</h3>
+                        <p class="card-desc">الرئة الخضراء للمنطقة، تتميز بمساحات شاسعة، بحيرات اصطناعية، ومسارات مخصصة للمشي وركوب الدراجات.</p>
+                        <p class="feature-item">- مثالية للنزهات العائلية</p>
                         <a href="https://maps.google.com" target="_blank" class="map-link">عرض الموقع على الخريطة</a>
                     </div>
                 </div>
 
                 <div class="card">
-                    <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80" alt="جادة قباء" class="card-img">
+                    <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80" alt="الممشى الحيوي" class="card-img">
                     <div class="card-content">
-                        <h3 class="card-title">جادة قباء</h3>
+                        <h3 class="card-title">الممشى السياحي</h3>
                         <p class="card-desc">ممشى حيوي مفتوح يجمع بين التسوق والترفيه، يعج بالمقاهي المتخصصة والمتاجر المتنوعة بأجواء رائعة.</p>
                         <p class="feature-item">- أجواء ليلية نابضة بالحياة</p>
                         <a href="https://maps.google.com" target="_blank" class="map-link">عرض الموقع على الخريطة</a>
@@ -324,36 +323,36 @@
         <div class="container">
             <div class="section-header">
                 <h2>الثقافة والتاريخ</h2>
-                <p>عبق الماضي وروحانية المكان</p>
+                <p>عبق الماضي وأصالة المكان</p>
             </div>
             
             <div class="grid-container">
                 <div class="card">
-                    <img src="https://images.unsplash.com/photo-1590452335198-4c925827361e?auto=format&fit=crop&w=600&q=80" alt="المسجد النبوي" class="card-img">
+                    <img src="https://images.unsplash.com/photo-1590452335198-4c925827361e?auto=format&fit=crop&w=600&q=80" alt="المنطقة التاريخية" class="card-img">
                     <div class="card-content">
-                        <h3 class="card-title">المسجد النبوي الشريف</h3>
-                        <p class="card-desc">ثاني أقدس الأماكن في الإسلام، يتميز بعمارته المهيبة ومظلاته الضخمة التي تزين ساحاته.</p>
-                        <p class="feature-item">- يحتوي على الروضة الشريفة</p>
+                        <h3 class="card-title">المنطقة التاريخية</h3>
+                        <p class="card-desc">وجهة تاريخية تتميز بعمارتها القديمة وأزقتها التي تروي قصصاً من الماضي العريق للزوار.</p>
+                        <p class="feature-item">- جولات إرشادية ممتعة</p>
                         <a href="https://maps.google.com" target="_blank" class="map-link">عرض الموقع على الخريطة</a>
                     </div>
                 </div>
 
                 <div class="card">
-                    <img src="https://images.unsplash.com/photo-1620138546344-7b2c38516fc5?auto=format&fit=crop&w=600&q=80" alt="مسجد قباء" class="card-img">
+                    <img src="https://images.unsplash.com/photo-1620138546344-7b2c38516fc5?auto=format&fit=crop&w=600&q=80" alt="المتحف الوطني" class="card-img">
                     <div class="card-content">
-                        <h3 class="card-title">مسجد قباء</h3>
-                        <p class="card-desc">أول مسجد أُسس على التقوى في الإسلام، ارتبطت به أحاديث نبوية تبين فضل الصلاة فيه.</p>
-                        <p class="feature-item">- يُفضل الوصول إليه عبر ممشى قباء</p>
+                        <h3 class="card-title">المتحف الوطني</h3>
+                        <p class="card-desc">يعرض مقتنيات نادرة وتحفاً فنية توثق تاريخ وحضارة المنطقة عبر العصور المختلفة بطريقة تفاعلية.</p>
+                        <p class="feature-item">- مناسب لجميع الأعمار</p>
                         <a href="https://maps.google.com" target="_blank" class="map-link">عرض الموقع على الخريطة</a>
                     </div>
                 </div>
 
                 <div class="card">
-                    <img src="https://images.unsplash.com/photo-1594998495048-18e381481b4d?auto=format&fit=crop&w=600&q=80" alt="جبل أحد" class="card-img">
+                    <img src="https://images.unsplash.com/photo-1594998495048-18e381481b4d?auto=format&fit=crop&w=600&q=80" alt="القلعة الأثرية" class="card-img">
                     <div class="card-content">
-                        <h3 class="card-title">جبل أحد ومقبرة الشهداء</h3>
-                        <p class="card-desc">معلم تاريخي مهم وقعت عنده غزوة أحد الشهيرة، ويضم ميدان الرماة ومقبرة شهداء الصحابة.</p>
-                        <p class="feature-item">- جبل يحبنا ونحبه</p>
+                        <h3 class="card-title">القلعة الأثرية</h3>
+                        <p class="card-desc">معلم تاريخي بارز يوفر إطلالة بانورامية رائعة، ويضم ساحات واسعة وأبراج مراقبة قديمة.</p>
+                        <p class="feature-item">- إطلالة خلابة وقت الغروب</p>
                         <a href="https://maps.google.com" target="_blank" class="map-link">عرض الموقع على الخريطة</a>
                     </div>
                 </div>
@@ -364,15 +363,12 @@
     <!-- سكريبت التنقل بين الأقسام -->
     <script>
         function switchView(viewId) {
-            // إخفاء كل الأقسام
             document.querySelectorAll('.view-section').forEach(section => {
                 section.classList.remove('active');
             });
             
-            // إظهار القسم المطلوب
             document.getElementById(viewId).classList.add('active');
             
-            // التمرير لأعلى الصفحة عند التنقل
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
